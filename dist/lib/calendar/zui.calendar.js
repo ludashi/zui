@@ -1,5 +1,5 @@
 /*!
- * ZUI - v1.3.2 - 2015-11-05
+ * ZUI - v1.3.1 - 2015-05-19
  * http://zui.sexy
  * GitHub: https://github.com/easysoft/zui.git 
  * Copyright (c) 2015 cnezsoft.com; Licensed MIT
@@ -352,6 +352,7 @@
 
     Calendar.prototype.updateEvents = function(events)
     {
+
         var eventsParams = {
                 data: this.data,
                 changes: []
@@ -362,6 +363,7 @@
         {
             events = [events];
         }
+
         var event, chgs, eventParam;
         $.each(events, function(index, changes)
         {
@@ -381,8 +383,9 @@
                 {
                     chgs = [chgs];
                 }
-                $.each(function(idx, chge)
+                $.each(chgs,function(idx, chge)
                 {
+
                     if (that.callEvent('beforeChange',
                         {
                             event: event,
@@ -391,15 +394,20 @@
                             from: event[chge.change]
                         }))
                     {
-                        eventParam.changes.push($.entend(true,
+
+
+                        eventParam.changes.push($.extend(true,
                         {}, chge,
                         {
                             from: event[chge.change]
                         }));
+
                         event[chge.change] = chge.to;
+
                     }
                 });
             }
+
             eventsParams.changes.push(eventParam);
         });
 
@@ -711,6 +719,7 @@
                 flex: true,
                 start: function()
                 {
+					  
                     $e.addClass('event-dragging');
                 },
                 drop: function(e)
@@ -733,10 +742,11 @@
                             }))
                         {
                             var oldEnd = et.end.clone();
-
-                            et.end.addMilliseconds(et.end.getTime() - startDate.getTime());
+							var oldStart = et.start.clone();
+                            //et.end.addMilliseconds(et.end.getTime() - startDate.getTime());							
                             et.start = newDate;
-
+							et.end.addMilliseconds(et.start.getTime()-oldStart.getTime());
+							//console.log(et.start.getTime()-oldStart.getTime());
                             // e.target.find('.events').append(e.element);
                             that.display();
 
@@ -764,6 +774,7 @@
                 },
                 finish: function()
                 {
+					
                     $e.removeClass('event-dragging');
                 }
             });
